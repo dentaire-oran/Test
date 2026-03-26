@@ -3,221 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Choice</title>
+    <title>Protocol 214</title>
     <style>
         :root {
-            --bg: #0a0a0c;
-            --accent: #ff2d55;
-            --glass: rgba(255, 255, 255, 0.03);
+            --neon: #00f2ff;
+            --danger: #ff0055;
+            --bg: #050505;
         }
 
-        /* Prevent the "Student" look (Blue boxes, text selection) */
         * {
+            margin: 0; padding: 0; box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
             user-select: none;
-            outline: none !important;
-            box-sizing: border-box;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
         }
 
         body {
-            margin: 0;
-            height: 100vh;
-            background: var(--bg);
+            background-color: var(--bg);
             color: white;
-            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
         }
 
-        #canvas-bg {
+        /* Grid Background Effect */
+        .grid {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            width: 200%; height: 200%;
+            background-image: 
+                linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg);
+            animation: move 10s linear infinite;
             z-index: 0;
-            filter: blur(40px);
-            opacity: 0.4;
-            transition: opacity 1s ease;
+            top: -50%;
         }
 
-        .container {
+        @keyframes move {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+        }
+
+        .terminal {
             position: relative;
             z-index: 10;
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid var(--neon);
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+            width: 90%;
+            max-width: 500px;
             text-align: center;
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
+        }
+
+        .header {
+            font-size: 0.8rem;
+            color: var(--neon);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            opacity: 0.8;
         }
 
         h1 {
-            font-weight: 200;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            margin-bottom: 60px;
-            color: rgba(255,255,255,0.5);
-            animation: fadeIn 2s ease;
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            font-weight: 300;
         }
 
-        /* The Slider Track */
-        .track {
-            position: relative;
-            height: 80px;
-            background: var(--glass);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 40px;
+        .btn-container {
             display: flex;
-            align-items: center;
-            padding: 0 10px;
-            backdrop-filter: blur(10px);
-        }
-
-        .label {
-            position: absolute;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 40px;
-            font-weight: 500;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.2);
-            pointer-events: none;
-        }
-
-        /* The Interactive Orb */
-        .orb {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border-radius: 50%;
-            cursor: grab;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            box-shadow: 0 0 20px rgba(255,255,255,0.2);
-            transition: transform 0.1s linear, box-shadow 0.3s ease;
-            z-index: 20;
-            position: relative;
+            gap: 20px;
+            height: 60px;
+            align-items: center;
         }
 
-        .orb:active { cursor: grabbing; scale: 0.95; }
+        .btn {
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            font-weight: bold;
+        }
 
-        .success-overlay {
+        .btn-yes:hover {
+            background: var(--neon);
+            color: black;
+            box-shadow: 0 0 20px var(--neon);
+        }
+
+        .btn-no {
+            border-color: #444;
+            color: #666;
+            z-index: 100;
+        }
+
+        /* Full Screen Overlays */
+        .overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: white;
-            z-index: 100;
+            background: black;
             display: none;
+            z-index: 1000;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: black;
-            animation: reveal 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+            padding: 20px;
+            text-align: center;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes reveal { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        #objection-screen { color: var(--danger); border: 4px solid var(--danger); }
+        #success-screen { color: var(--neon); }
 
-        .vignette {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 20%, var(--bg) 100%);
-            pointer-events: none;
+        .glitch { animation: glitch 0.3s infinite; }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
         }
     </style>
 </head>
 <body>
 
-    <div class="vignette"></div>
-    <div id="canvas-bg"></div>
+    <div class="grid"></div>
 
-    <div class="container" id="ui">
-        <h1>Initialization of a Choice</h1>
-        <div class="track" id="track">
-            <div class="label">
-                <span>REJECT</span>
-                <span>ACCEPT</span>
-            </div>
-            <div class="orb" id="orb">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5">
-                    <path d="M9 18l6-6-6-6"/>
-                </svg>
-            </div>
+    <div class="terminal" id="main-ui">
+        <div class="header">Incoming Transmission // ID: 214</div>
+        <h1>Authorize "Valentine" connection for the upcoming cycle?</h1>
+        <div class="btn-container">
+            <button class="btn btn-yes" id="yesBtn">Authorize</button>
+            <button class="btn btn-no" id="noBtn">Decline</button>
         </div>
     </div>
 
-    <div class="success-overlay" id="finish">
-        <h2 style="font-weight: 200; letter-spacing: 8px; text-transform: uppercase;">Connection Established</h2>
-        <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.6;">I'll see you very soon.</p>
+    <div class="overlay" id="objection-screen">
+        <h1 class="glitch">CRITICAL LOGIC FAILURE</h1>
+        <p style="margin-top: 20px;">Option 'Decline' is logically inconsistent with current user behavior. <br> Please reboot your personality and try again.</p>
+        <button class="btn" style="margin-top: 40px; border-color: var(--danger); color: var(--danger);" onclick="location.reload()">Retry System</button>
+    </div>
+
+    <div class="overlay" id="success-screen">
+        <h1 style="letter-spacing: 5px;">CONNECTION ESTABLISHED</h1>
+        <p style="margin-top: 20px; opacity: 0.7;">Handshake complete. Syncing schedules for Feb 14.</p>
     </div>
 
     <script>
-        const orb = document.getElementById('orb');
-        const track = document.getElementById('track');
-        const ui = document.getElementById('ui');
-        const finish = document.getElementById('finish');
-        const bg = document.getElementById('canvas-bg');
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const objScreen = document.getElementById('objection-screen');
+        const sucScreen = document.getElementById('success-screen');
 
-        let isDragging = false;
-        let startX = 0;
-        let currentX = 0;
+        // Repulsion Field Logic
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            applyRepulsion();
+        });
 
-        const onStart = (e) => {
-            isDragging = true;
-            startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
-            orb.style.transition = 'none';
-        };
+        document.addEventListener('touchmove', e => {
+            mouseX = e.touches[0].clientX;
+            mouseY = e.touches[0].clientY;
+            applyRepulsion();
+        });
 
-        const onMove = (e) => {
-            if (!isDragging) return;
-            const x = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
-            const delta = x - startX;
-            const maxDelta = track.offsetWidth - orb.offsetWidth - 20;
+        function applyRepulsion() {
+            const rect = noBtn.getBoundingClientRect();
+            const btnX = rect.left + rect.width / 2;
+            const btnY = rect.top + rect.height / 2;
 
-            // Constrain movement
-            currentX = Math.max(0, Math.min(delta, maxDelta));
-            orb.style.transform = `translateX(${currentX}px)`;
+            const distance = Math.hypot(mouseX - btnX, mouseY - btnY);
+            const radius = 120; // Repulsion zone
 
-            // Visual feedback - Atmosphere heating up
-            const percent = currentX / maxDelta;
-            bg.style.background = `radial-gradient(circle, var(--accent) ${percent * 50}%, transparent 70%)`;
-            bg.style.opacity = percent;
-            
-            if (percent > 0.95) {
-                complete();
+            if (distance < radius) {
+                const angle = Math.atan2(mouseY - btnY, mouseX - btnX);
+                const force = (radius - distance) / 10;
+                
+                // Calculate new position
+                let moveX = Math.cos(angle) * force * -20;
+                let moveY = Math.sin(angle) * force * -20;
+
+                // Keep it in bounds
+                const newX = Math.min(Math.max(moveX, -window.innerWidth/3), window.innerWidth/3);
+                const newY = Math.min(Math.max(moveY, -window.innerHeight/3), window.innerHeight/3);
+
+                noBtn.style.transform = `translate(${newX}px, ${newY}px)`;
             }
-        };
+        }
 
-        const onEnd = () => {
-            if (!isDragging) return;
-            isDragging = false;
-            if (currentX / (track.offsetWidth - orb.offsetWidth - 20) < 0.95) {
-                orb.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                orb.style.transform = `translateX(0px)`;
-                bg.style.opacity = 0;
-            }
-        };
+        noBtn.addEventListener('click', () => {
+            document.getElementById('main-ui').style.display = 'none';
+            objScreen.style.display = 'flex';
+        });
 
-        const complete = () => {
-            isDragging = false;
-            ui.style.opacity = '0';
-            ui.style.transform = 'scale(0.9)';
-            ui.style.transition = 'all 0.5s ease';
-            
-            setTimeout(() => {
-                finish.style.display = 'flex';
-            }, 300);
-        };
-
-        orb.addEventListener('mousedown', onStart);
-        window.addEventListener('mousemove', onMove);
-        window.addEventListener('mouseup', onEnd);
-
-        orb.addEventListener('touchstart', onStart);
-        window.addEventListener('touchmove', onMove);
-        window.addEventListener('touchend', onEnd);
+        yesBtn.addEventListener('click', () => {
+            document.getElementById('main-ui').style.display = 'none';
+            sucScreen.style.display = 'flex';
+        });
     </script>
 </body>
 </html>

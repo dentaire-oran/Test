@@ -3,112 +3,120 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valentine?</title>
+  <title>For You</title>
   <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #ffe6e6;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      overflow: hidden;
-      text-align: center;
+    * { box-sizing: border-box; }
+    body { 
+      margin: 0; height: 100vh; 
+      background: linear-gradient(to bottom right, #1a1a2e, #16213e, #0f3460); 
+      display: flex; justify-content: center; align-items: center; 
+      font-family: system-ui, -apple-system, sans-serif; 
+      overflow: hidden; 
     }
-    .container {
-      position: relative;
-      z-index: 10;
+    canvas { position: absolute; top: 0; left: 0; z-index: 0; pointer-events: none; }
+    
+    .glass-card { 
+      position: relative; z-index: 1; 
+      background: rgba(255, 255, 255, 0.05); 
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); 
+      border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.1); 
+      padding: 60px 40px; text-align: center; 
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); 
+      width: 90%; max-width: 420px; color: white;
+      transition: box-shadow 0.5s ease;
     }
-    img {
-      width: 100%;
-      max-width: 250px;
-      border-radius: 10px;
+    h1 { font-size: 2.2rem; font-weight: 300; margin-bottom: 40px; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
+    
+    .btn-container { display: flex; justify-content: center; gap: 20px; min-height: 50px; }
+    button { 
+      padding: 14px 35px; font-size: 1.1rem; border-radius: 30px; 
+      border: none; cursor: pointer; font-weight: 600; 
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; 
     }
-    h1 {
-      color: #ff4d4d;
-      margin: 20px 0;
-      font-size: 2rem;
+    
+    .yes { 
+      background: linear-gradient(45deg, #e94560, #ff2e63); color: white; 
+      box-shadow: 0 0 15px rgba(233, 69, 96, 0.4); z-index: 2;
     }
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 20px;
-    }
-    button {
-      padding: 12px 30px;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: transform 0.1s ease, box-shadow 0.2s ease;
-    }
-    button:active {
-      transform: scale(0.95);
-    }
-    #yes-btn {
-      background-color: #ff4d4d;
-      color: white;
-      box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
-    }
-    #no-btn {
-      background-color: white;
-      color: #ff4d4d;
-      border: 2px solid #ff4d4d;
-      transition: left 0.2s ease-out, top 0.2s ease-out;
+    .yes:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(233, 69, 96, 0.8); }
+    
+    .no { 
+      background: rgba(255,255,255,0.05); color: #aaa; 
+      border: 1px solid rgba(255,255,255,0.2); 
+      backdrop-filter: blur(5px);
     }
   </style>
 </head>
 <body>
-
-  <div class="container">
-    <img id="gif" src="https://media.tenor.com/efhiOMpB7iQAAAAj/tkthao219-bubududu.gif" alt="Bears">
-    <h1 id="question">Will you be my Valentine?</h1>
-    
-    <div class="buttons">
-      <button id="yes-btn">Yes!</button>
-      <button id="no-btn">No</button>
+  <canvas id="canvas"></canvas>
+  <div class="glass-card" id="card">
+    <h1 id="text">Will you be mine?</h1>
+    <div class="btn-container">
+      <button class="yes" id="yesBtn">Yes</button>
+      <button class="no" id="noBtn">No</button>
     </div>
   </div>
 
   <script>
-    const yesBtn = document.getElementById('yes-btn');
-    const noBtn = document.getElementById('no-btn');
-    const gif = document.getElementById('gif');
-    const question = document.getElementById('question');
-    const buttonsContainer = document.querySelector('.buttons');
+    // Particle Background Engine
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
-    const dodge = () => {
-      if (noBtn.style.position !== 'fixed') {
-        noBtn.style.position = 'fixed';
-      }
+    const particles = Array.from({length: 60}, () => ({
+      x: Math.random() * canvas.width, 
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2.5 + 0.5, 
+      dy: Math.random() * -1.5 - 0.5,
+      alpha: Math.random() * 0.5 + 0.1
+    }));
 
-      const btnWidth = noBtn.offsetWidth;
-      const btnHeight = noBtn.offsetHeight;
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath(); 
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(233, 69, 96, ${p.alpha})`; 
+        ctx.fill();
+        p.y += p.dy; 
+        if(p.y < 0) p.y = canvas.height;
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // Evasion Logic
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const text = document.getElementById('text');
+    const card = document.getElementById('card');
+    
+    const evade = () => {
+      noBtn.style.position = 'fixed';
+      const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+      const maxY = window.innerHeight - noBtn.offsetHeight - 20;
       
-      const maxX = window.innerWidth - btnWidth - 20;
-      const maxY = window.innerHeight - btnHeight - 20;
-
-      const randomX = Math.max(10, Math.floor(Math.random() * maxX));
-      const randomY = Math.max(10, Math.floor(Math.random() * maxY));
-
-      noBtn.style.left = `${randomX}px`;
-      noBtn.style.top = `${randomY}px`;
+      const x = Math.max(20, Math.random() * maxX);
+      const y = Math.max(20, Math.random() * maxY);
+      
+      // Hardware-accelerated movement
+      noBtn.style.transform = `translate(${x - noBtn.getBoundingClientRect().left}px, ${y - noBtn.getBoundingClientRect().top}px) rotate(${Math.random() * 30 - 15}deg) scale(0.9)`;
     };
 
-    noBtn.addEventListener('mouseover', dodge);
-    noBtn.addEventListener('touchstart', (e) => {
-      e.preventDefault(); 
-      dodge();
-    });
-
+    noBtn.addEventListener('mouseover', evade);
+    noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); evade(); }, {passive: false});
+    
     yesBtn.addEventListener('click', () => {
-      gif.src = "https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif";
-      question.innerText = "Yay! I knew it! ❤️";
-      buttonsContainer.style.display = 'none';
-      noBtn.style.display = 'none'; 
+      text.innerHTML = "Access Granted. 💖";
+      document.querySelector('.btn-container').style.display = 'none';
+      card.style.boxShadow = '0 0 60px rgba(233, 69, 96, 0.6)';
+      noBtn.style.display = 'none';
     });
   </script>
 </body>

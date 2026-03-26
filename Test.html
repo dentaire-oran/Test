@@ -3,202 +3,657 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A Little Surprise ✨</title>
+    <title>For You 💌</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        * {
+        *, *::before, *::after {
             margin: 0; padding: 0; box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
         }
 
-        body {
-            background-color: #fff5f7;
-            height: 100vh;
-            width: 100vw;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            overflow: hidden; /* Prevents scrolling when the button moves */
+        :root {
+            --bg:          #0d0710;
+            --pink:        #ff6b8a;
+            --rose:        #ff3d60;
+            --text:        #ffe8ef;
+            --text-sub:    rgba(255, 218, 228, 0.68);
+            --border:      rgba(255, 130, 160, 0.18);
+            --card-bg:     rgba(255, 235, 242, 0.05);
         }
 
-        /* Soft background glow */
-        .bg-glow {
+        /* ─── BASE ─── */
+        html, body {
+            height: 100%; width: 100%;
+            overflow: hidden;
+            background: var(--bg);
+            font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+
+        /* ─── CURSOR (desktop only) ─── */
+        @media (pointer: fine) { body { cursor: none; } }
+
+        #cursor {
+            display: none;
+            position: fixed;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s ease;
+        }
+        #cursor svg { width: 22px; height: 22px; fill: #ff6b8a; filter: drop-shadow(0 0 5px rgba(255,107,138,.7)); }
+
+        #cursor-glow {
+            display: none;
+            position: fixed;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,107,138,.25) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 99998;
+            transform: translate(-50%, -50%);
+            transition: left .18s ease, top .18s ease;
+        }
+
+        @media (pointer: fine) {
+            #cursor      { display: block; }
+            #cursor-glow { display: block; }
+        }
+
+        /* ─── BACKGROUND ─── */
+        .bg {
+            position: fixed; inset: 0; z-index: 0;
+            background:
+                radial-gradient(ellipse at 15% 55%, rgba(180,0,70,.2) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 20%, rgba(255,60,100,.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 55% 90%, rgba(120,0,50,.14) 0%, transparent 50%),
+                var(--bg);
+        }
+
+        /* Subtle grain */
+        .bg::after {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            opacity: .025;
+            pointer-events: none;
+        }
+
+        /* ─── FLOATING HEARTS ─── */
+        .hearts { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+
+        .h-float {
             position: absolute;
+            bottom: -60px;
+            opacity: 0;
+            animation: floatUp var(--dur, 8s) ease-in var(--delay, 0s) infinite;
+        }
+
+        @keyframes floatUp {
+            0%   { opacity: 0; transform: translateY(0)        rotate(0deg)   scale(.5); }
+            8%   { opacity: var(--op, .3); }
+            85%  { opacity: var(--op, .25); }
+            100% { opacity: 0; transform: translateY(-115vh)   rotate(340deg) scale(1.1); }
+        }
+
+        /* ─── CARD ─── */
+        .scene {
+            position: relative; z-index: 10;
             width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #ffcad4 0%, #fff5f7 70%);
-            z-index: 0;
+            display: flex; align-items: center; justify-content: center;
         }
 
         .card {
-            background: white;
-            padding: 40px 25px;
+            background: var(--card-bg);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid var(--border);
             border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.4);
+            padding: 52px 38px 46px;
+            width: 90%; max-width: 420px;
             text-align: center;
-            width: 90%;
-            max-width: 400px;
             position: relative;
-            z-index: 10;
+            box-shadow:
+                0 0 0 1px rgba(255,140,170,.04),
+                0 30px 70px rgba(0,0,0,.55),
+                inset 0 0 60px rgba(255,77,109,.04);
+            animation: cardIn .9s cubic-bezier(.34,1.56,.64,1) both;
         }
 
-        h1 {
-            color: #ff4d6d;
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            font-weight: 800;
+        @keyframes cardIn {
+            from { opacity:0; transform: translateY(28px) scale(.93); }
+            to   { opacity:1; transform: translateY(0)    scale(1);   }
         }
 
-        p {
-            color: #774950;
-            font-size: 1.1rem;
-            margin-bottom: 35px;
-            line-height: 1.4;
+        /* shimmer ring */
+        .card::before {
+            content: '';
+            position: absolute; inset: -1px;
+            border-radius: 30px;
+            background: linear-gradient(125deg,
+                rgba(255,107,138,.45) 0%,
+                transparent 35%,
+                rgba(255,77,109,.2) 65%,
+                transparent 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            animation: ringRotate 6s linear infinite;
         }
 
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
+        @keyframes ringRotate {
+            to { filter: hue-rotate(30deg); }
         }
+
+        /* stagger children */
+        .c1 { animation: fadeUp .5s ease both .35s; opacity:0; }
+        .c2 { animation: fadeUp .5s ease both .55s; opacity:0; }
+        .c3 { animation: fadeUp .5s ease both .7s;  opacity:0; }
+        .c4 { animation: fadeUp .5s ease both .85s; opacity:0; }
+
+        @keyframes fadeUp {
+            from { opacity:0; transform: translateY(14px); }
+            to   { opacity:1; transform: translateY(0);    }
+        }
+
+        .card-rose {
+            font-size: 52px;
+            display: inline-block;
+            margin-bottom: 18px;
+            filter: drop-shadow(0 0 14px rgba(255,100,130,.55));
+            animation: pulse 2.2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1);    }
+            50%       { transform: scale(1.12); }
+        }
+
+        .card h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1.6rem, 5vw, 2rem);
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 10px;
+            letter-spacing: -.4px;
+            line-height: 1.25;
+        }
+
+        .divider {
+            width: 55px; height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255,107,138,.4), transparent);
+            margin: 14px auto 18px;
+        }
+
+        .card p {
+            font-size: clamp(1rem, 3.5vw, 1.15rem);
+            color: var(--text-sub);
+            margin-bottom: 38px;
+            line-height: 1.75;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .card p strong {
+            font-style: normal;
+            font-weight: 400;
+            color: var(--text);
+        }
+
+        /* ─── BUTTONS ─── */
+        .btn-group { display: flex; flex-direction: column; gap: 13px; align-items: center; }
 
         .btn {
-            padding: 16px 40px;
-            border-radius: 50px;
             border: none;
-            font-size: 1.1rem;
+            border-radius: 50px;
+            font-family: 'Playfair Display', serif;
             font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            max-width: 240px;
-            transition: transform 0.2s ease-out;
+            font-size: clamp(.9rem, 3vw, 1rem);
+            letter-spacing: .2px;
+            width: 100%; max-width: 270px;
+            padding: 16px 44px;
+            position: relative;
+            overflow: hidden;
         }
 
+        @media (pointer: fine) { .btn { cursor: none; } }
+        @media (pointer: coarse) { .btn { cursor: pointer; } }
+
+        /* YES */
         #yesBtn {
-            background: #ff4d6d;
-            color: white;
-            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+            background: linear-gradient(135deg, #ff4d6d 0%, #e0003a 100%);
+            color: #fff;
+            box-shadow: 0 8px 28px rgba(255,60,90,.38);
+            transition: transform .15s ease, box-shadow .15s ease;
             z-index: 20;
         }
 
-        #noBtn {
-            background: #ffe5ec;
-            color: #ff4d6d;
-            border: 2px solid #ffb3c1;
-            position: relative;
-            z-index: 1000;
+        #yesBtn:active { transform: scale(.96) !important; }
+
+        /* shimmer sweep */
+        #yesBtn::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -65%;
+            width: 45%; height: 200%;
+            background: rgba(255,255,255,.22);
+            transform: skewX(-20deg);
+            animation: sweep 2.8s ease-in-out infinite;
         }
 
-        /* Success & Objection Pages */
-        .page {
+        @keyframes sweep {
+            0%   { left: -65%; }
+            100% { left: 160%; }
+        }
+
+        /* NO */
+        #noBtn {
+            background: rgba(255,255,255,.045);
+            color: rgba(255,195,210,.55);
+            border: 1px solid rgba(255,140,165,.18);
+            font-size: clamp(.78rem, 2.5vw, .88rem);
+            font-weight: 400;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            transition: opacity .2s;
+        }
+
+        /* ─── ATTEMPT HINT ─── */
+        #hint {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            bottom: 28px; left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(.95rem, 3vw, 1.05rem);
+            color: rgba(255,175,190,.5);
+            pointer-events: none;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity .4s ease;
+        }
+
+        /* ─── SUCCESS PAGE ─── */
+        #success {
+            position: fixed; inset: 0;
             display: none;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            z-index: 2000;
+            align-items: center; justify-content: center;
+            text-align: center; padding: 30px;
+            z-index: 3000;
+            background: var(--bg);
         }
 
-        #success { background: #fff5f7; }
-        #objection { background: #2b1b3d; color: white; }
+        #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
 
-        .emoji { font-size: 70px; margin-bottom: 20px; }
+        .success-inner { position: relative; z-index: 10; }
+
+        .s-icon {
+            font-size: 80px;
+            display: block; margin-bottom: 22px;
+            animation: heartBeat .75s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 18px rgba(255,77,109,.55));
+        }
+
+        @keyframes heartBeat {
+            from { transform: scale(1);    }
+            to   { transform: scale(1.18); }
+        }
+
+        .s-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 8vw, 3.6rem);
+            font-weight: 900;
+            font-style: italic;
+            color: var(--text);
+            margin-bottom: 18px;
+            line-height: 1.15;
+        }
+
+        .s-sub {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.05rem, 3.5vw, 1.2rem);
+            color: var(--text-sub);
+            line-height: 1.85;
+            font-weight: 300;
+        }
+
+        /* ─── OBJECTION PAGE ─── */
+        #objection {
+            position: fixed; inset: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center; justify-content: center;
+            text-align: center; padding: 30px;
+            z-index: 3000;
+            background: #080508;
+        }
+
+        .o-icon { font-size: 68px; margin-bottom: 20px; }
+
+        #objection h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.7rem, 6vw, 2.1rem);
+            color: var(--pink);
+            margin-bottom: 16px;
+        }
+
+        #objection p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1rem, 3.5vw, 1.15rem);
+            color: var(--text-sub);
+            line-height: 1.8;
+            font-style: italic;
+            margin-bottom: 32px;
+        }
+
+        .o-retry {
+            padding: 15px 44px;
+            border-radius: 50px; border: none;
+            background: linear-gradient(135deg, #ff4d6d, #e0003a);
+            color: white;
+            font-family: 'Playfair Display', serif;
+            font-size: .95rem; font-weight: 700;
+            box-shadow: 0 8px 24px rgba(255,60,90,.38);
+        }
+
+        @media (pointer: coarse) { .o-retry { cursor: pointer; } }
+        @media (pointer: fine)   { .o-retry { cursor: none;    } }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
+    <!-- Custom heart cursor -->
+    <div id="cursor">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 28s-13-8.35-13-16A8 8 0 0 1 16 6.37 8 8 0 0 1 29 12c0 7.65-13 16-13 16z"/>
+        </svg>
+    </div>
+    <div id="cursor-glow"></div>
 
-    <div class="card" id="mainCard">
-        <div style="font-size: 50px; margin-bottom: 10px;">💝</div>
-        <h1>I have a question...</h1>
-        <p>I’ve been thinking about this for a while. Will you be my Valentine? ✨</p>
-        
-        <div class="btn-group">
-            <button class="btn" id="yesBtn">Yes, I'd love to! 🥰</button>
-            <button class="btn" id="noBtn">No, I'm mean 😈</button>
+    <!-- BG -->
+    <div class="bg"></div>
+
+    <!-- Floating hearts -->
+    <div class="hearts" id="hearts"></div>
+
+    <!-- Main card -->
+    <div class="scene">
+        <div class="card" id="mainCard">
+            <div class="c1"><div class="card-rose">🌹</div></div>
+
+            <div class="c2">
+                <h1>I have something<br>to ask you…</h1>
+                <div class="divider"></div>
+            </div>
+
+            <div class="c3">
+                <p>
+                    Somewhere between all our laughs, all our little moments —
+                    I realized there's <strong>nowhere else I'd rather be</strong>
+                    than right by your side.<br><br>
+                    So… will you be my Valentine? 🌸
+                </p>
+            </div>
+
+            <div class="c4">
+                <div class="btn-group">
+                    <button class="btn" id="yesBtn">Yes, of course I will 💗</button>
+                    <button class="btn" id="noBtn">hmm… let me think… no.</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="page" id="success">
-        <div class="emoji">💖</div>
-        <h1 style="font-size: 2.5rem; color: #ff4d6d;">I KNEW IT!</h1>
-        <p style="color: #774950;">You just made my day. <br> Can't wait for Feb 14th!</p>
+    <!-- Hint text -->
+    <div id="hint"></div>
+
+    <!-- Success -->
+    <div id="success">
+        <canvas id="confetti"></canvas>
+        <div class="success-inner">
+            <span class="s-icon">💖</span>
+            <div class="s-title">She said yes!</div>
+            <p class="s-sub">
+                You have no idea what that just did to my heart.<br>
+                February 14th is officially the best day of the year.<br><br>
+                <span style="font-family:'Dancing Script',cursive; font-size:1.4em; color:var(--pink);">
+                    I like you. A lot. 🌹
+                </span>
+            </p>
+        </div>
     </div>
 
-    <div class="page" id="objection">
-        <div class="emoji">🤨</div>
-        <h1>HEY! NO CHEATING!</h1>
-        <p style="margin-top: 15px; opacity: 0.8;">You actually managed to catch that? <br> You definitely used some kind of hack. <br> Try again and be nice this time! ❤️</p>
-        <button class="btn" style="margin-top: 30px; background: #ff4d6d; color: white;" onclick="location.reload()">Try Again 😉</button>
+    <!-- Objection -->
+    <div id="objection">
+        <div class="o-icon">🤨</div>
+        <h1>No, no, no…</h1>
+        <p>
+            You actually caught that button?<br>
+            That's honestly kind of impressive.<br>
+            But there's no hacking your way out of this one —<br>
+            love doesn't have a "No" option. 💅
+        </p>
+        <button class="o-retry" onclick="location.reload()">Okay fine, yes. 😇</button>
     </div>
 
     <script>
-        const noBtn = document.getElementById('noBtn');
-        const yesBtn = document.getElementById('yesBtn');
-        const mainCard = document.getElementById('mainCard');
-        
-        let attempts = 0;
-        const maxAttempts = 8; // After 8 tries, she can actually click it
+    (() => {
+        /* ── UTILS ─────────────────────────────────────── */
+        const $ = id => document.getElementById(id);
+        const isMobile = () => window.matchMedia('(pointer: coarse)').matches;
 
-        // Combined Repulsion and Boundary Logic
-        function handleMove(e) {
-            if (attempts >= maxAttempts) return;
+        /* ── CURSOR ─────────────────────────────────────── */
+        const cur  = $('cursor');
+        const glow = $('cursor-glow');
 
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        document.addEventListener('mousemove', e => {
+            cur.style.left  = e.clientX + 'px';
+            cur.style.top   = e.clientY + 'px';
+            glow.style.left = e.clientX + 'px';
+            glow.style.top  = e.clientY + 'px';
+        });
 
-            const rect = noBtn.getBoundingClientRect();
-            const btnCenterX = rect.left + rect.width / 2;
-            const btnCenterY = rect.top + rect.height / 2;
+        // Big heart when hovering YES
+        $('yesBtn').addEventListener('mouseenter', () => cur.style.transform = 'translate(-50%,-50%) scale(1.5)');
+        $('yesBtn').addEventListener('mouseleave', () => cur.style.transform = 'translate(-50%,-50%) scale(1)');
 
-            const distance = Math.hypot(clientX - btnCenterX, clientY - btnCenterY);
-            const radius = 100; // Activation distance
+        /* ── FLOATING HEARTS ────────────────────────────── */
+        const heartsEl = $('hearts');
+        const emojis   = ['💗','💕','🩷','❤️','💝','✨','🌸','🫧'];
 
-            if (distance < radius) {
-                attempts++;
-                
-                // Calculate new position
-                const padding = 20;
-                const maxX = window.innerWidth - rect.width - padding;
-                const maxY = window.innerHeight - rect.height - padding;
+        function spawnHeart() {
+            const el     = document.createElement('div');
+            el.className = 'h-float';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            const size  = 10 + Math.random() * 18;
+            const dur   = 7 + Math.random() * 7;
+            const delay = Math.random() * 6;
+            const blur  = Math.random() < .35 ? Math.random() * 2.5 : 0;
+            const op    = (.12 + Math.random() * .25).toFixed(2);
+            el.style.cssText = `
+                left: ${Math.random() * 100}%;
+                font-size: ${size}px;
+                filter: blur(${blur}px);
+                --dur: ${dur}s;
+                --delay: ${delay}s;
+                --op: ${op};
+            `;
+            heartsEl.appendChild(el);
+            setTimeout(() => el.remove(), (dur + delay) * 1000 + 200);
+        }
 
-                // Move to a random spot that is definitely on-screen
-                const newX = Math.random() * maxX;
-                const newY = Math.random() * maxY;
+        for (let i = 0; i < 22; i++) spawnHeart();
+        setInterval(spawnHeart, 750);
 
-                noBtn.style.position = 'fixed';
-                noBtn.style.left = '0';
-                noBtn.style.top = '0';
-                noBtn.style.transform = `translate(${newX}px, ${newY}px)`;
-                
-                // Make "Yes" button slightly bigger to be more tempting
-                const currentScale = 1 + (attempts * 0.05);
-                yesBtn.style.transform = `scale(${currentScale})`;
+        /* ── NO-BUTTON ESCAPE ───────────────────────────── */
+        const noBtn    = $('noBtn');
+        const yesBtn   = $('yesBtn');
+        const mainCard = $('mainCard');
+        const hint     = $('hint');
+
+        let attempts   = 0;
+        const MAX      = isMobile() ? 6 : 8;
+        let isFixed    = false;
+
+        const msgs = [
+            "It keeps running away… 😅",
+            "Still running! 💨",
+            "You'll never catch it 😜",
+            "Getting sneakier… 🏃",
+            "Okay this is embarrassing 😅",
+            "It really doesn't want to be clicked 😂",
+            "Just click Yes already! 🙈",
+            "Alright it's tired now… 😩",
+        ];
+
+        function detachBtn() {
+            if (isFixed) return;
+            // Preserve current visual position before detaching from flow
+            const r = noBtn.getBoundingClientRect();
+            noBtn.style.position  = 'fixed';
+            noBtn.style.left      = r.left + 'px';
+            noBtn.style.top       = r.top  + 'px';
+            noBtn.style.width     = r.width  + 'px';
+            noBtn.style.margin    = '0';
+            noBtn.style.zIndex    = '1000';
+            isFixed = true;
+        }
+
+        function escapeFrom(cx, cy) {
+            if (attempts >= MAX) return;
+            detachBtn();
+
+            const r    = noBtn.getBoundingClientRect();
+            const bx   = r.left + r.width  / 2;
+            const by   = r.top  + r.height / 2;
+            const pad  = 14;
+            let nx, ny;
+
+            if (isMobile()) {
+                // Random jump — touch has no precision to exploit
+                nx = pad + Math.random() * (window.innerWidth  - r.width  - pad * 2);
+                ny = pad + Math.random() * (window.innerHeight - r.height - pad * 2);
+            } else {
+                // Directional escape — runs away from the cursor
+                const dx = bx - cx || 1;
+                const dy = by - cy || 1;
+                const len = Math.hypot(dx, dy);
+                const dist = 120 + Math.random() * 60;
+                nx = bx + (dx / len) * dist - r.width  / 2;
+                ny = by + (dy / len) * dist - r.height / 2;
+                nx = Math.max(pad, Math.min(window.innerWidth  - r.width  - pad, nx));
+                ny = Math.max(pad, Math.min(window.innerHeight - r.height - pad, ny));
+            }
+
+            noBtn.style.left      = nx + 'px';
+            noBtn.style.top       = ny + 'px';
+            noBtn.style.transform = 'none';
+
+            attempts++;
+
+            // Grow YES button — more tempting each time
+            const sc = Math.min(1 + attempts * .045, 1.55);
+            yesBtn.style.transform = `scale(${sc})`;
+
+            // Hint message
+            if (attempts - 1 < msgs.length) {
+                hint.textContent = msgs[attempts - 1];
+                hint.style.opacity = '1';
             }
         }
 
-        // Listen for mouse on PC and touch on Mobile
-        document.addEventListener('mousemove', handleMove);
-        document.addEventListener('touchstart', handleMove);
+        /* Desktop: proximity on mousemove */
+        if (!isMobile()) {
+            document.addEventListener('mousemove', e => {
+                if (attempts >= MAX) return;
+                const r   = noBtn.getBoundingClientRect();
+                const bx  = r.left + r.width  / 2;
+                const by  = r.top  + r.height / 2;
+                if (Math.hypot(e.clientX - bx, e.clientY - by) < 115) {
+                    escapeFrom(e.clientX, e.clientY);
+                }
+            });
+        }
 
-        // Click handlers
+        /* Mobile: run on touchstart */
+        noBtn.addEventListener('touchstart', e => {
+            e.preventDefault();
+            if (attempts >= MAX) return;
+            const t = e.touches[0];
+            escapeFrom(t.clientX, t.clientY);
+        }, { passive: false });
+
+        /* Clicking NO (only possible after MAX attempts) */
         noBtn.addEventListener('click', () => {
-            if (attempts >= maxAttempts) {
-                mainCard.style.display = 'none';
-                document.getElementById('objection').style.display = 'flex';
-            }
+            if (attempts < MAX) return;
+            hide(mainCard); hide(noBtn); hide(hint);
+            show($('objection'));
         });
 
+        /* Clicking YES */
         yesBtn.addEventListener('click', () => {
-            mainCard.style.display = 'none';
-            noBtn.style.display = 'none';
-            document.getElementById('success').style.display = 'flex';
+            hide(mainCard); hide(noBtn); hide(hint);
+            show($('success'));
+            runConfetti();
         });
+
+        function show(el) { el.style.display = 'flex'; }
+        function hide(el) { el.style.display = 'none'; }
+
+        /* ── CONFETTI ────────────────────────────────────── */
+        function runConfetti() {
+            const canvas = $('confetti');
+            canvas.width  = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const ctx    = canvas.getContext('2d');
+            const colors = ['#ff4d6d','#ff80ab','#ffb3c1','#ffffff','#ff1744','#f8bbd0','#fce4ec','#e8a4a4'];
+            const syms   = ['♥','✦','✿','◆','·','★'];
+            const P      = Array.from({ length: 130 }, () => ({
+                x:  Math.random() * canvas.width,
+                y:  Math.random() * canvas.height - canvas.height,
+                sz: 6 + Math.random() * 14,
+                vx: (Math.random() - .5) * 3.5,
+                vy: 1.4 + Math.random() * 3,
+                rot: Math.random() * 360,
+                rs: (Math.random() - .5) * 6,
+                col: colors[Math.floor(Math.random() * colors.length)],
+                sym: syms[Math.floor(Math.random() * syms.length)],
+                op:  .4 + Math.random() * .6,
+            }));
+
+            let frame;
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = 0;
+                P.forEach(p => {
+                    p.x  += p.vx;
+                    p.y  += p.vy;
+                    p.vy += .04;
+                    p.rot += p.rs;
+                    if (p.y < canvas.height + 30) {
+                        alive++;
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate(p.rot * Math.PI / 180);
+                        ctx.globalAlpha = p.op;
+                        ctx.fillStyle   = p.col;
+                        ctx.font        = `${p.sz * 2}px serif`;
+                        ctx.textAlign   = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(p.sym, 0, 0);
+                        ctx.restore();
+                    }
+                });
+                if (alive > 0) frame = requestAnimationFrame(draw);
+                else cancelAnimationFrame(frame);
+            }
+            draw();
+        }
+
+    })();
     </script>
 </body>
 </html>

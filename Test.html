@@ -2,229 +2,189 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A Moment for Us</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>A Little Surprise ✨</title>
     <style>
-        :root {
-            --accent: #ffb3c1;
-            --deep: #2b1b3d;
-            --glass: rgba(255, 255, 255, 0.1);
-        }
-
         * {
             margin: 0; padding: 0; box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
-            font-family: 'Inter', -apple-system, sans-serif;
         }
 
         body {
-            background: radial-gradient(circle at center, #432371, #1a1a2e);
+            background-color: #fff5f7;
+            background-image: radial-gradient(#ffcad4 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
-            color: white;
-        }
-
-        /* Ambient floating particles */
-        .stars {
-            position: absolute;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 1;
         }
 
         .card {
-            position: relative;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 50px 30px;
-            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 40px 20px;
             text-align: center;
             width: 90%;
-            max-width: 400px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            animation: cardEntry 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            max-width: 380px;
+            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.3);
+            border: 2px solid #ffffff;
+            position: relative;
+            z-index: 10;
         }
 
-        @keyframes cardEntry {
-            from { opacity: 0; transform: translateY(30px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        .img-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
         }
 
         h1 {
-            font-size: 1.8rem;
-            font-weight: 300;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            color: var(--accent);
+            color: #ff4d6d;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            font-weight: 800;
         }
 
         p {
+            color: #774950;
             font-size: 1rem;
-            opacity: 0.8;
-            margin-bottom: 40px;
-            line-height: 1.6;
+            line-height: 1.5;
+            margin-bottom: 30px;
         }
 
-        .btn-wrap {
+        .btn-group {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             align-items: center;
-            position: relative;
+            min-height: 120px; /* Space for the button to move */
         }
 
         .btn {
-            padding: 16px 40px;
+            padding: 15px 40px;
             border-radius: 50px;
             border: none;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             width: 100%;
-            max-width: 200px;
+            max-width: 220px;
         }
 
         #yesBtn {
-            background: linear-gradient(45deg, #ff85a1, #ff4d6d);
+            background: #ff4d6d;
             color: white;
-            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+            box-shadow: 0 8px 15px rgba(255, 77, 109, 0.3);
+            z-index: 20;
         }
 
         #noBtn {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.2);
-            position: relative;
+            background: #ffe5ec;
+            color: #ff4d6d;
+            border: 2px solid #ffb3c1;
+            transition: all 0.2s ease;
         }
 
-        /* Final States */
-        .overlay {
+        /* Success Screen */
+        #celebration {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #1a1a2e;
+            background: #fff5f7;
             display: none;
-            z-index: 1000;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            z-index: 100;
             text-align: center;
-            padding: 30px;
         }
-
-        .heart { font-size: 4rem; margin-bottom: 20px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
     </style>
 </head>
 <body>
 
-    <canvas class="stars" id="starCanvas"></canvas>
-
     <div class="card" id="mainCard">
-        <h1>Hi there...</h1>
-        <p>I wanted to ask you something special. You probably already know what it is, right?</p>
+        <div class="img-container">💝</div>
+        <h1 id="title">Wait, I have a question...</h1>
+        <p id="desc">I've been thinking about this for a bit. Will you be my Valentine?</p>
         
-        <div class="btn-wrap">
-            <button class="btn" id="yesBtn">Yes, of course!</button>
-            <button class="btn" id="noBtn">Not today</button>
+        <div class="btn-group">
+            <button class="btn" id="yesBtn">Yes, I'd love to! 🥰</button>
+            <button class="btn" id="noBtn">Nah, I'm boring 🙄</button>
         </div>
     </div>
 
-    <div class="overlay" id="success">
-        <div class="heart">💖</div>
-        <h1>I knew it.</h1>
-        <p>You just made my whole year. See you on the 14th!</p>
-    </div>
-
-    <div class="overlay" id="objection">
-        <h1 style="color: #ff85a1;">ERROR 404: Fate Not Found</h1>
-        <p style="margin-top: 20px;">Wait, did you actually click that? That button wasn't even supposed to be clickable. You're too fast for your own good!</p>
-        <button class="btn" style="margin-top: 30px; background: white; color: black;" onclick="location.reload()">Try again, Cheater 😉</button>
+    <div id="celebration">
+        <div style="font-size: 60px; margin-bottom: 20px;">🎉</div>
+        <h1 style="font-size: 2.5rem;">YAY! ❤️</h1>
+        <p style="font-size: 1.2rem;">I honestly wasn't sure you'd say yes.<br>See you on the 14th!</p>
     </div>
 
     <script>
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
         const mainCard = document.getElementById('mainCard');
-        
-        // --- EVASION LOGIC ---
-        const moveButton = (e) => {
-            const padding = 20;
-            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+        const title = document.getElementById('title');
+        const desc = document.getElementById('desc');
 
-            const randomX = Math.random() * maxX;
-            const randomY = Math.random() * maxY;
+        const moves = [
+            "Nice try! 😉",
+            "Are you sure? 🤨",
+            "Think again! ✨",
+            "Missed me! 💃",
+            "You're too slow! 🏃‍♀️",
+            "Nope! 😋"
+        ];
+        let moveIdx = 0;
 
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = '0';
-            noBtn.style.top = '0';
-            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
-        };
+        function moveNoButton() {
+            // Keep the button inside the visible area of the card container
+            const container = document.querySelector('.btn-group');
+            const rect = container.getBoundingClientRect();
+            
+            // Generate a random position within the container bounds
+            const x = Math.random() * (rect.width - noBtn.offsetWidth);
+            const y = Math.max(-50, Math.random() * (rect.height + 50)); 
 
-        // For PC: Move on hover
-        noBtn.addEventListener('mouseover', moveButton);
-        
-        // For Mobile: Move as soon as a finger touches it (prevents the click)
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+            
+            // Change the text to something funny
+            noBtn.innerText = moves[moveIdx];
+            moveIdx = (moveIdx + 1) % moves.length;
+
+            // Make the Yes button slightly bigger every time she misses
+            const currentScale = parseFloat(yesBtn.style.transform.replace('scale(', '')) || 1;
+            yesBtn.style.transform = `scale(${currentScale + 0.05})`;
+        }
+
+        // PC: Hover
+        noBtn.addEventListener('mouseover', moveNoButton);
+
+        // Mobile: Touch (Teleports before they can click)
         noBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            moveButton();
+            moveNoButton();
         });
 
-        // --- SUCCESS & OBJECTION ---
+        // The real click event for No (just in case they are super fast)
+        noBtn.addEventListener('click', () => {
+            alert("Wow, you caught it! But the answer is still Yes. 😜");
+        });
+
         yesBtn.addEventListener('click', () => {
             mainCard.style.display = 'none';
-            document.getElementById('success').style.display = 'flex';
+            document.getElementById('celebration').style.display = 'flex';
         });
-
-        noBtn.addEventListener('click', () => {
-            // If they actually manage to click it (rare)
-            mainCard.style.display = 'none';
-            document.getElementById('objection').style.display = 'flex';
-        });
-
-        // --- AMBIENT BACKGROUND ---
-        const canvas = document.getElementById('starCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = [];
-            for (let i = 0; i < 80; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 2,
-                    speed: Math.random() * 0.5 + 0.1
-                });
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(255, 179, 193, 0.5)';
-            particles.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
-                p.y -= p.speed;
-                if (p.y < 0) p.y = canvas.height;
-            });
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', init);
-        init();
-        animate();
     </script>
 </body>
 </html>

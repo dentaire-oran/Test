@@ -2,218 +2,222 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Invitation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Choice</title>
     <style>
         :root {
-            --primary: #ff4d6d;
-            --bg-1: #fff0f3;
-            --bg-2: #ffccd5;
+            --bg: #0a0a0c;
+            --accent: #ff2d55;
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Prevent the "Student" look (Blue boxes, text selection) */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+            outline: none !important;
+            box-sizing: border-box;
+        }
 
         body {
+            margin: 0;
             height: 100vh;
+            background: var(--bg);
+            color: white;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
             overflow: hidden;
-            color: #444;
         }
 
-        /* Animated Mesh Gradient Background */
-        .mesh {
+        #canvas-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0;
-            filter: blur(80px);
-            opacity: 0.6;
+            filter: blur(40px);
+            opacity: 0.4;
+            transition: opacity 1s ease;
         }
 
-        .ball {
-            position: absolute;
-            border-radius: 50%;
-            animation: float 20s infinite alternate;
-        }
-
-        .b1 { width: 400px; height: 400px; background: #ffb3c1; top: -10%; left: -10%; }
-        .b2 { width: 500px; height: 500px; background: #ff85a1; bottom: -10%; right: -10%; animation-delay: -5s; }
-
-        @keyframes float {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(100px, 150px); }
-        }
-
-        .card {
+        .container {
             position: relative;
             z-index: 10;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            padding: 3rem;
-            border-radius: 32px;
             text-align: center;
-            width: 90%;
-            max-width: 450px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
         }
 
         h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #ff4d6d, #c9184a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-weight: 200;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 60px;
+            color: rgba(255,255,255,0.5);
+            animation: fadeIn 2s ease;
         }
 
-        p {
-            font-size: 1.1rem;
-            color: #666;
-            margin-bottom: 2.5rem;
-            line-height: 1.5;
-        }
-
-        .controls {
+        /* The Slider Track */
+        .track {
+            position: relative;
+            height: 80px;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 40px;
             display: flex;
-            gap: 1.5rem;
-            justify-content: center;
             align-items: center;
+            padding: 0 10px;
+            backdrop-filter: blur(10px);
         }
 
-        button {
-            border: none;
-            padding: 1rem 2.5rem;
-            border-radius: 16px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .label {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.2);
+            pointer-events: none;
         }
 
-        #yesBtn {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
-            z-index: 100;
-        }
-
-        #noBtn {
+        /* The Interactive Orb */
+        .orb {
+            width: 60px;
+            height: 60px;
             background: white;
-            color: #888;
-            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 50%;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+            transition: transform 0.1s linear, box-shadow 0.3s ease;
+            z-index: 20;
+            position: relative;
         }
 
-        /* The Reveal State */
-        .celebration {
+        .orb:active { cursor: grabbing; scale: 0.95; }
+
+        .success-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            z-index: 100;
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
-            background: #fff;
-            animation: fadeIn 1s forwards;
+            color: black;
+            animation: reveal 1.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes reveal { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-        .heart-icon {
-            font-size: 5rem;
-            margin-bottom: 20px;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        .vignette {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 20%, var(--bg) 100%);
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="mesh">
-        <div class="ball b1"></div>
-        <div class="ball b2"></div>
-    </div>
+    <div class="vignette"></div>
+    <div id="canvas-bg"></div>
 
-    <div class="card" id="mainCard">
-        <h1 id="heading">Wait... I have a question</h1>
-        <p id="subtext">I've been thinking about this for a while now.</p>
-        
-        <div class="controls" id="btnGroup">
-            <button id="yesBtn">Yes</button>
-            <button id="noBtn">No</button>
+    <div class="container" id="ui">
+        <h1>Initialization of a Choice</h1>
+        <div class="track" id="track">
+            <div class="label">
+                <span>REJECT</span>
+                <span>ACCEPT</span>
+            </div>
+            <div class="orb" id="orb">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </div>
         </div>
     </div>
 
-    <div class="celebration" id="finalScreen">
-        <div class="heart-icon">❤️</div>
-        <h1 style="color: #ff4d6d; -webkit-text-fill-color: #ff4d6d;">I knew you'd say yes.</h1>
-        <p>See you on the 14th. ✨</p>
+    <div class="success-overlay" id="finish">
+        <h2 style="font-weight: 200; letter-spacing: 8px; text-transform: uppercase;">Connection Established</h2>
+        <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.6;">I'll see you very soon.</p>
     </div>
 
     <script>
-        const yesBtn = document.getElementById('yesBtn');
-        const noBtn = document.getElementById('noBtn');
-        const mainCard = document.getElementById('mainCard');
-        const heading = document.getElementById('heading');
-        const subtext = document.getElementById('subtext');
-        const finalScreen = document.getElementById('finalScreen');
+        const orb = document.getElementById('orb');
+        const track = document.getElementById('track');
+        const ui = document.getElementById('ui');
+        const finish = document.getElementById('finish');
+        const bg = document.getElementById('canvas-bg');
 
-        let yesScale = 1;
-        let noScale = 1;
-        
-        const messages = [
-            "Are you sure?",
-            "Really sure??",
-            "Think again...",
-            "Don't do this to me :(",
-            "You're breaking my heart!",
-            "I'm gonna cry...",
-            "Okay, now you're just being mean!"
-        ];
-        
-        let messageIndex = 0;
+        let isDragging = false;
+        let startX = 0;
+        let currentX = 0;
 
-        noBtn.addEventListener('click', () => {
-            // Update text to be more persuasive
-            heading.innerText = messages[messageIndex];
-            messageIndex = (messageIndex + 1) % messages.length;
+        const onStart = (e) => {
+            isDragging = true;
+            startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+            orb.style.transition = 'none';
+        };
+
+        const onMove = (e) => {
+            if (!isDragging) return;
+            const x = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+            const delta = x - startX;
+            const maxDelta = track.offsetWidth - orb.offsetWidth - 20;
+
+            // Constrain movement
+            currentX = Math.max(0, Math.min(delta, maxDelta));
+            orb.style.transform = `translateX(${currentX}px)`;
+
+            // Visual feedback - Atmosphere heating up
+            const percent = currentX / maxDelta;
+            bg.style.background = `radial-gradient(circle, var(--accent) ${percent * 50}%, transparent 70%)`;
+            bg.style.opacity = percent;
             
-            // The "Original Idea": Yes grows, No shrinks
-            yesScale += 0.3;
-            noScale -= 0.1;
-            
-            yesBtn.style.transform = `scale(${yesScale})`;
-            noBtn.style.transform = `scale(${noScale})`;
-            
-            // If No becomes too small, it fades out
-            if(noScale < 0.4) {
-                noBtn.style.opacity = '0';
-                noBtn.style.pointerEvents = 'none';
+            if (percent > 0.95) {
+                complete();
             }
-        });
+        };
 
-        yesBtn.addEventListener('click', () => {
-            mainCard.style.transform = 'scale(0.8)';
-            mainCard.style.opacity = '0';
+        const onEnd = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            if (currentX / (track.offsetWidth - orb.offsetWidth - 20) < 0.95) {
+                orb.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                orb.style.transform = `translateX(0px)`;
+                bg.style.opacity = 0;
+            }
+        };
+
+        const complete = () => {
+            isDragging = false;
+            ui.style.opacity = '0';
+            ui.style.transform = 'scale(0.9)';
+            ui.style.transition = 'all 0.5s ease';
             
             setTimeout(() => {
-                mainCard.style.display = 'none';
-                finalScreen.style.display = 'flex';
-            }, 600);
-        });
+                finish.style.display = 'flex';
+            }, 300);
+        };
+
+        orb.addEventListener('mousedown', onStart);
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onEnd);
+
+        orb.addEventListener('touchstart', onStart);
+        window.addEventListener('touchmove', onMove);
+        window.addEventListener('touchend', onEnd);
     </script>
 </body>
 </html>

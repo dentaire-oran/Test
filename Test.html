@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>A Little Surprise ✨</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For My Favorite Person ✨</title>
     <style>
         * {
             margin: 0; padding: 0; box-sizing: border-box;
@@ -12,178 +12,189 @@
         }
 
         body {
-            background-color: #fff5f7;
-            background-image: radial-gradient(#ffcad4 0.5px, transparent 0.5px);
-            background-size: 20px 20px;
+            background-color: #fff0f3;
             height: 100vh;
+            width: 100vw;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            overflow: hidden;
+            font-family: 'Inter', -apple-system, sans-serif;
+            overflow: hidden; /* Keeps everything clean */
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
+            background: white;
+            padding: 40px 30px;
             border-radius: 30px;
-            padding: 40px 20px;
-            text-align: center;
-            width: 90%;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.15);
+            width: 100%;
             max-width: 380px;
-            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.3);
-            border: 2px solid #ffffff;
-            position: relative;
-            z-index: 10;
-        }
-
-        .img-container {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
+            transition: opacity 0.5s ease;
         }
 
         h1 {
             color: #ff4d6d;
-            font-size: 1.6rem;
-            margin-bottom: 10px;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
             font-weight: 800;
         }
 
         p {
-            color: #774950;
-            font-size: 1rem;
-            line-height: 1.5;
-            margin-bottom: 30px;
+            color: #594145;
+            font-size: 1.1rem;
+            margin-bottom: 35px;
+            line-height: 1.4;
         }
 
         .btn-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
             align-items: center;
-            min-height: 120px; /* Space for the button to move */
         }
 
         .btn {
-            padding: 15px 40px;
+            padding: 16px 45px;
             border-radius: 50px;
             border: none;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             width: 100%;
-            max-width: 220px;
+            max-width: 240px;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         #yesBtn {
             background: #ff4d6d;
             color: white;
-            box-shadow: 0 8px 15px rgba(255, 77, 109, 0.3);
-            z-index: 20;
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+            z-index: 2;
         }
 
         #noBtn {
             background: #ffe5ec;
             color: #ff4d6d;
             border: 2px solid #ffb3c1;
-            transition: all 0.2s ease;
+            z-index: 1000; /* Stays on top while moving */
         }
 
-        /* Success Screen */
-        #celebration {
+        /* Views */
+        .full-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #fff5f7;
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 100;
             text-align: center;
+            padding: 20px;
+            z-index: 2000;
         }
+
+        #success { background: #fff0f3; color: #ff4d6d; }
+        #objection { background: #1a1a1a; color: #ff4d6d; }
+
+        .emoji { font-size: 80px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="card" id="mainCard">
-        <div class="img-container">💝</div>
-        <h1 id="title">Wait, I have a question...</h1>
-        <p id="desc">I've been thinking about this for a bit. Will you be my Valentine?</p>
-        
-        <div class="btn-group">
-            <button class="btn" id="yesBtn">Yes, I'd love to! 🥰</button>
-            <button class="btn" id="noBtn">Nah, I'm boring 🙄</button>
+    <div class="container" id="mainView">
+        <div class="card">
+            <div style="font-size: 50px; margin-bottom: 15px;">💌</div>
+            <h1>I have a question...</h1>
+            <p>You’re the only person I wanted to ask this. Will you be my Valentine?</p>
+            
+            <div class="btn-group">
+                <button class="btn" id="yesBtn">Yes, obviously! ❤️</button>
+                <button class="btn" id="noBtn">Nah, I'm mean 😈</button>
+            </div>
         </div>
     </div>
 
-    <div id="celebration">
-        <div style="font-size: 60px; margin-bottom: 20px;">🎉</div>
-        <h1 style="font-size: 2.5rem;">YAY! ❤️</h1>
-        <p style="font-size: 1.2rem;">I honestly wasn't sure you'd say yes.<br>See you on the 14th!</p>
+    <div class="full-screen" id="success">
+        <div class="emoji">🥰</div>
+        <h1 style="font-size: 3rem;">I KNEW IT!</h1>
+        <p style="font-size: 1.3rem;">Best decision you've ever made. <br> Can't wait for Feb 14th!</p>
+    </div>
+
+    <div class="full-screen" id="objection">
+        <div class="emoji">🤨</div>
+        <h1 style="color: white;">CHEATER ALERT!</h1>
+        <p style="color: #aaa; margin-top: 20px;">Wait, how did you actually click that? <br> You definitely used some kind of hack. <br> Try again, and this time be nice! 🙄</p>
+        <button class="btn" style="margin-top: 30px; background: #ff4d6d; color: white;" onclick="location.reload()">Reset System</button>
     </div>
 
     <script>
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
-        const mainCard = document.getElementById('mainCard');
-        const title = document.getElementById('title');
-        const desc = document.getElementById('desc');
+        const mainView = document.getElementById('mainView');
+        const successView = document.getElementById('success');
+        const objectionView = document.getElementById('objection');
 
-        const moves = [
+        const cheekyTexts = [
+            "Nope! 💃",
+            "Missed me! 😜",
+            "Try again! ✨",
+            "Too slow! 🏃‍♀️",
             "Nice try! 😉",
-            "Are you sure? 🤨",
-            "Think again! ✨",
-            "Missed me! 💃",
-            "You're too slow! 🏃‍♀️",
-            "Nope! 😋"
+            "Not happening! 😋"
         ];
-        let moveIdx = 0;
+        let textIdx = 0;
 
         function moveNoButton() {
-            // Keep the button inside the visible area of the card container
-            const container = document.querySelector('.btn-group');
-            const rect = container.getBoundingClientRect();
+            // Switch to fixed so it can roam the entire page
+            noBtn.style.position = 'fixed';
             
-            // Generate a random position within the container bounds
-            const x = Math.random() * (rect.width - noBtn.offsetWidth);
-            const y = Math.max(-50, Math.random() * (rect.height + 50)); 
+            // Calculate random position while keeping it fully inside the screen
+            const padding = 30;
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-            noBtn.style.position = 'absolute';
-            noBtn.style.left = `${x}px`;
-            noBtn.style.top = `${y}px`;
+            const randomX = Math.max(padding, Math.random() * maxX);
+            const randomY = Math.max(padding, Math.random() * maxY);
+
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
             
-            // Change the text to something funny
-            noBtn.innerText = moves[moveIdx];
-            moveIdx = (moveIdx + 1) % moves.length;
+            // Change text to be cheeky
+            noBtn.innerText = cheekyTexts[textIdx];
+            textIdx = (textIdx + 1) % cheekyTexts.length;
 
-            // Make the Yes button slightly bigger every time she misses
+            // Subtle "Yes" growth to encourage clicking the right one
             const currentScale = parseFloat(yesBtn.style.transform.replace('scale(', '')) || 1;
-            yesBtn.style.transform = `scale(${currentScale + 0.05})`;
+            if (currentScale < 1.8) {
+                yesBtn.style.transform = `scale(${currentScale + 0.08})`;
+            }
         }
 
-        // PC: Hover
+        // PC Hover
         noBtn.addEventListener('mouseover', moveNoButton);
 
-        // Mobile: Touch (Teleports before they can click)
+        // Mobile Touch (Instant teleport)
         noBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
             moveNoButton();
         });
 
-        // The real click event for No (just in case they are super fast)
+        // Redirect to Objection Page if she actually wins the mini-game
         noBtn.addEventListener('click', () => {
-            alert("Wow, you caught it! But the answer is still Yes. 😜");
+            mainView.style.display = 'none';
+            objectionView.style.display = 'flex';
         });
 
+        // Redirect to Success Page
         yesBtn.addEventListener('click', () => {
-            mainCard.style.display = 'none';
-            document.getElementById('celebration').style.display = 'flex';
+            mainView.style.display = 'none';
+            noBtn.style.display = 'none';
+            successView.style.display = 'flex';
         });
     </script>
 </body>

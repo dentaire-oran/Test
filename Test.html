@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For You \ud83d\udc8c</title>
+    <title>For You 💌</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
     <style>
@@ -14,13 +14,13 @@
         }
 
         :root {
-            --bg:       #0d0710;
-            --pink:     #ff6b8a;
-            --rose:     #ff3d60;
-            --text:     #ffe8ef;
-            --sub:      rgba(255, 218, 228, 0.65);
-            --border:   rgba(255, 130, 160, 0.18);
-            --card-bg:  rgba(255, 235, 242, 0.05);
+            --bg:      #0d0710;
+            --pink:    #ff6b8a;
+            --rose:    #ff3d60;
+            --text:    #ffe8ef;
+            --sub:     rgba(255, 218, 228, 0.65);
+            --border:  rgba(255, 130, 160, 0.18);
+            --card-bg: rgba(255, 235, 242, 0.05);
         }
 
         html, body {
@@ -30,7 +30,7 @@
             font-family: 'Cormorant Garamond', Georgia, serif;
         }
 
-        /* \u2500\u2500\u2500 CUSTOM CURSOR (desktop only) \u2500\u2500\u2500 */
+        /* ─── CURSOR (desktop only) ─── */
         @media (pointer: fine) { body, button { cursor: none !important; } }
 
         #cur {
@@ -50,7 +50,7 @@
 
         @media (pointer: fine) { #cur { display: block; } #cur-glow { display: block; } }
 
-        /* \u2500\u2500\u2500 BACKGROUND \u2500\u2500\u2500 */
+        /* ─── BACKGROUND ─── */
         .bg {
             position: fixed; inset: 0; z-index: 0;
             background:
@@ -60,36 +60,33 @@
                 var(--bg);
         }
         .bg::after {
-            content: '';  position: absolute; inset: 0; pointer-events: none;
+            content: ''; position: absolute; inset: 0; pointer-events: none;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
             opacity: .025;
         }
 
-        /* \u2500\u2500\u2500 AMBIENT ORBIT RING (desktop only) \u2500\u2500\u2500 */
+        /* ─── ORBIT RING — subtle dashed circle to hint at PC behavior ─── */
         #orbitRing {
-            display: none;
-            position: fixed; border-radius: 50%; pointer-events: none; z-index: 2;
-            border: 1px dashed rgba(255, 107, 138, 0.1);
+            display: none; position: fixed; border-radius: 50%;
+            pointer-events: none; z-index: 2;
+            border: 1px dashed rgba(255, 107, 138, 0.09);
             transform: translate(-50%, -50%);
             animation: ringPulse 4s ease-in-out infinite;
         }
         @media (pointer: fine) { #orbitRing { display: block; } }
-        @keyframes ringPulse {
-            0%, 100% { opacity: .5; }
-            50%       { opacity: .15; }
-        }
+        @keyframes ringPulse { 0%,100%{ opacity:.55; } 50%{ opacity:.15; } }
 
-        /* \u2500\u2500\u2500 FLOATING HEARTS \u2500\u2500\u2500 */
+        /* ─── FLOATING HEARTS ─── */
         .hearts { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
         .h { position: absolute; bottom: -60px; opacity: 0; animation: floatUp var(--d,8s) ease-in var(--dl,0s) infinite; }
         @keyframes floatUp {
-            0%   { opacity:0; transform: translateY(0) rotate(0deg) scale(.5); }
-            8%   { opacity: var(--op,.3); }
-            85%  { opacity: var(--op,.25); }
-            100% { opacity:0; transform: translateY(-115vh) rotate(340deg) scale(1.1); }
+            0%  { opacity:0; transform: translateY(0) rotate(0deg) scale(.5); }
+            8%  { opacity: var(--op,.3); }
+            85% { opacity: var(--op,.25); }
+            100%{ opacity:0; transform: translateY(-115vh) rotate(340deg) scale(1.1); }
         }
 
-        /* \u2500\u2500\u2500 SCENE / CARD \u2500\u2500\u2500 */
+        /* ─── SCENE / CARD ─── */
         .scene {
             position: relative; z-index: 10;
             width: 100%; height: 100%;
@@ -99,8 +96,7 @@
         .card {
             background: var(--card-bg);
             backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
-            border: 1px solid var(--border);
-            border-radius: 30px;
+            border: 1px solid var(--border); border-radius: 30px;
             padding: 52px 38px 46px;
             width: 90%; max-width: 420px;
             text-align: center; position: relative;
@@ -140,29 +136,25 @@
             font-weight: 900; color: var(--text);
             margin-bottom: 10px; letter-spacing: -.4px; line-height: 1.25;
         }
-
         .divider {
             width: 55px; height: 1px; margin: 14px auto 18px;
             background: linear-gradient(to right, transparent, rgba(255,107,138,.4), transparent);
         }
-
         .card p {
             font-size: clamp(1rem, 3.5vw, 1.12rem); color: var(--sub);
             margin-bottom: 38px; line-height: 1.8; font-weight: 300; font-style: italic;
         }
         .card p strong { font-style: normal; font-weight: 400; color: var(--text); }
 
-        /* \u2500\u2500\u2500 BUTTONS \u2500\u2500\u2500 */
+        /* ─── BUTTONS ─── */
         .btn-group { display: flex; flex-direction: column; gap: 13px; align-items: center; }
 
         .btn {
             border: none; border-radius: 50px;
             font-family: 'Playfair Display', serif;
             font-weight: 700; font-size: clamp(.88rem, 3vw, 1rem);
-            letter-spacing: .2px;
-            width: 100%; max-width: 270px;
-            padding: 16px 44px;
-            position: relative; overflow: hidden;
+            letter-spacing: .2px; width: 100%; max-width: 270px;
+            padding: 16px 44px; position: relative; overflow: hidden;
         }
 
         #yesBtn {
@@ -179,39 +171,41 @@
         }
         @keyframes shimmer { 0%{ left:-65%; } 100%{ left:160%; } }
 
+        /* NO button — fluid CSS transition is the magic here */
         #noBtn {
             background: rgba(255,255,255,.042);
-            color: rgba(255,195,210,.48);
-            border: 1px solid rgba(255,140,165,.16);
+            color: rgba(255,195,210,.45);
+            border: 1px solid rgba(255,140,165,.15);
             font-style: italic; font-weight: 400;
             font-family: 'Cormorant Garamond', serif;
             font-size: clamp(.8rem, 2.5vw, .9rem);
-            /* Smooth glide \u2014 the key fix */
-            transition: left .42s cubic-bezier(.34,1.3,.64,1), top .42s cubic-bezier(.34,1.3,.64,1), opacity .3s ease;
+            /* SMOOTH GLIDE — position transitions handled via left/top on fixed element */
+            transition:
+                left .45s cubic-bezier(.34,1.25,.64,1),
+                top  .45s cubic-bezier(.34,1.25,.64,1),
+                opacity .3s ease;
         }
 
-        /* \u2500\u2500\u2500 HINT \u2500\u2500\u2500 */
+        /* ─── HINT ─── */
         #hint {
             position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%);
             z-index: 15; pointer-events: none; white-space: nowrap;
             font-family: 'Dancing Script', cursive;
             font-size: clamp(.88rem, 3vw, 1rem);
-            color: rgba(255,175,190,.48);
+            color: rgba(255,175,190,.45);
             opacity: 0; transition: opacity .4s ease;
         }
 
-        /* \u2500\u2500\u2500 FULL-SCREEN PAGES \u2500\u2500\u2500 */
+        /* ─── FULL SCREEN PAGES ─── */
         .page {
-            position: fixed; inset: 0;
-            display: none; flex-direction: column;
-            align-items: center; justify-content: center;
+            position: fixed; inset: 0; display: none;
+            flex-direction: column; align-items: center; justify-content: center;
             text-align: center; padding: 30px; z-index: 3000;
         }
 
         /* SUCCESS */
         #success { background: var(--bg); }
         #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
-
         .s-inner { position: relative; z-index: 10; }
         .s-icon {
             font-size: 80px; display: block; margin-bottom: 22px;
@@ -231,42 +225,37 @@
             color: var(--sub); line-height: 1.85; font-weight: 300;
         }
 
-        /* OBJECTION \u2014 NO page */
-        #objection {
-            background: #07050a;
-            flex-direction: column;
-        }
+        /* ─── NO PAGE (no retry button — once is once) ─── */
+        #objection { background: #060408; }
 
         .no-rose {
             font-size: 58px; margin-bottom: 22px;
-            filter: grayscale(80%) drop-shadow(0 0 10px rgba(100,50,60,.5));
+            filter: grayscale(75%) drop-shadow(0 0 10px rgba(80,30,40,.5));
             animation: wilt 3s ease-in-out infinite alternate;
         }
         @keyframes wilt {
-            from { transform: rotate(-4deg) scale(1); }
-            to   { transform: rotate(4deg)  scale(.96); }
+            from { transform: rotate(-5deg) scale(1); }
+            to   { transform: rotate(5deg)  scale(.95); }
         }
 
         #objection h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.6rem, 6vw, 2rem);
-            color: rgba(255, 160, 175, 0.75);
-            margin-bottom: 20px; font-style: italic; line-height: 1.3;
+            font-size: clamp(1.5rem, 6vw, 1.9rem);
+            color: rgba(255, 155, 170, 0.65);
+            margin-bottom: 18px; font-style: italic; line-height: 1.3;
         }
-
-        #objection p {
+        #objection .no-text {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(.95rem, 3.5vw, 1.12rem);
-            color: rgba(255, 200, 215, 0.45);
-            line-height: 1.9; font-style: italic;
-            max-width: 380px;
+            font-size: clamp(.95rem, 3.5vw, 1.1rem);
+            color: rgba(255, 195, 210, 0.4);
+            line-height: 2; font-style: italic;
+            max-width: 360px;
         }
-
         .no-sign {
-            margin-top: 36px;
+            margin-top: 32px;
             font-family: 'Dancing Script', cursive;
-            font-size: clamp(1.1rem, 4vw, 1.3rem);
-            color: rgba(255, 107, 138, 0.28);
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            color: rgba(255, 107, 138, 0.22);
             letter-spacing: .5px;
         }
     </style>
@@ -280,29 +269,26 @@
     <div id="orbitRing"></div>
     <div class="hearts" id="hearts"></div>
 
-    <!-- \u2500\u2500 MAIN CARD \u2500\u2500 -->
+    <!-- MAIN CARD -->
     <div class="scene">
         <div class="card" id="mainCard">
-            <div class="c1"><div class="rose">\ud83c\udf39</div></div>
-
+            <div class="c1"><div class="rose">🌹</div></div>
             <div class="c2">
-                <h1>I have something<br>to ask you\u2026</h1>
+                <h1>I have something<br>to ask you…</h1>
                 <div class="divider"></div>
             </div>
-
             <div class="c3">
                 <p>
                     Somewhere between all our laughs and all our little moments,
                     I realized there's <strong>nowhere else I'd rather be</strong>
                     than right by your side.<br><br>
-                    So\u2026 will you be my Valentine? \ud83c\udf38
+                    So… will you be my Valentine? 🌸
                 </p>
             </div>
-
             <div class="c4">
                 <div class="btn-group">
-                    <button class="btn" id="yesBtn">Yes, of course I will \ud83d\udc97</button>
-                    <button class="btn" id="noBtn">hmm\u2026 let me think\u2026 no.</button>
+                    <button class="btn" id="yesBtn">Yes, of course I will 💗</button>
+                    <button class="btn" id="noBtn">hmm… let me think… no.</button>
                 </div>
             </div>
         </div>
@@ -310,251 +296,273 @@
 
     <div id="hint"></div>
 
-    <!-- \u2500\u2500 SUCCESS \u2500\u2500 -->
+    <!-- SUCCESS PAGE -->
     <div class="page" id="success">
         <canvas id="confetti"></canvas>
         <div class="s-inner">
-            <span class="s-icon">\ud83d\udc96</span>
+            <span class="s-icon">💖</span>
             <div class="s-title">She said yes!</div>
             <p class="s-sub">
                 You have no idea what that just did to my heart.<br>
                 February 14th is officially the best day of the year.<br><br>
                 <span style="font-family:'Dancing Script',cursive; font-size:1.4em; color:var(--pink);">
-                    I like you. A lot. \ud83c\udf39
+                    I like you. A lot. 🌹
                 </span>
             </p>
         </div>
     </div>
 
-    <!-- \u2500\u2500 NO PAGE (final, no retry) \u2500\u2500 -->
+    <!-- NO PAGE — final, no retry -->
     <div class="page" id="objection">
-        <div class="no-rose">\ud83e\udd40</div>
+        <div class="no-rose">🥀</div>
         <h1>Fine. It's a no.</h1>
-        <p>
-            You actually chased that button down<br>and clicked it on purpose.<br><br>
-            I hope you're happy.<br>
+        <p class="no-text">
+            You actually chased that button down and clicked it on purpose.<br><br>
+            I hope you're proud of yourself.<br>
             I'll just be here. Alone. In the dark.<br>
             Eating my feelings. One snack at a time.<br><br>
-            \u2026okay maybe that was a little dramatic.<br>
-            But still. That <em>hurt</em>. \ud83d\udc94
+            …okay maybe that was a bit dramatic.<br>
+            But you really just said no to being my Valentine.<br>
+            To <em>me.</em> The audacity. 💔
         </p>
-        <div class="no-sign">\u2014 sent at 2:47 AM, clearly fine \u2014</div>
+        <div class="no-sign">— sent at 2:47 AM, clearly totally fine —</div>
     </div>
 
-    <script>
-    (() => {
-        const $   = id => document.getElementById(id);
-        const mob = () => window.matchMedia('(pointer: coarse)').matches;
+<script>
+(() => {
+    const $   = id => document.getElementById(id);
+    const mob = () => window.matchMedia('(pointer: coarse)').matches;
 
-        /* \u2500\u2500 CURSOR \u2500\u2500 */
-        const cur  = $('cur');
-        const glow = $('cur-glow');
-        let mx = -999, my = -999;
+    /* ── CURSOR ── */
+    const cur  = $('cur');
+    const glow = $('cur-glow');
 
-        document.addEventListener('mousemove', e => {
-            mx = e.clientX; my = e.clientY;
-            cur.style.left  = mx + 'px';
-            cur.style.top   = my + 'px';
-            glow.style.left = mx + 'px';
-            glow.style.top  = my + 'px';
-        });
+    document.addEventListener('mousemove', e => {
+        cur.style.left  = e.clientX + 'px';
+        cur.style.top   = e.clientY + 'px';
+        glow.style.left = e.clientX + 'px';
+        glow.style.top  = e.clientY + 'px';
+    });
+    $('yesBtn').addEventListener('mouseenter', () => cur.style.transform = 'translate(-50%,-50%) scale(1.5)');
+    $('yesBtn').addEventListener('mouseleave', () => cur.style.transform = 'translate(-50%,-50%) scale(1)');
 
-        $('yesBtn').addEventListener('mouseenter', () => cur.style.transform = 'translate(-50%,-50%) scale(1.5)');
-        $('yesBtn').addEventListener('mouseleave', () => cur.style.transform = 'translate(-50%,-50%) scale(1)');
+    /* ── ORBIT RING ── */
+    const ring = $('orbitRing');
+    function getR() { return Math.min(window.innerWidth, window.innerHeight) * 0.36; }
+    function sizeRing() {
+        const D = getR() * 2;
+        ring.style.width  = D + 'px';
+        ring.style.height = D + 'px';
+        ring.style.left   = (window.innerWidth  / 2) + 'px';
+        ring.style.top    = (window.innerHeight / 2) + 'px';
+    }
+    sizeRing();
+    window.addEventListener('resize', sizeRing);
 
-        /* \u2500\u2500 ORBIT RING (visual only) \u2500\u2500 */
-        const ring = $('orbitRing');
-        function sizeRing() {
-            const R = orbitRadius();
-            const D = R * 2;
-            ring.style.width  = D + 'px';
-            ring.style.height = D + 'px';
-            ring.style.left   = (window.innerWidth  / 2) + 'px';
-            ring.style.top    = (window.innerHeight / 2) + 'px';
-        }
+    /* ── FLOATING HEARTS ── */
+    const heartsEl = $('hearts');
+    const emos = ['💗','💕','🩷','❤️','💝','✨','🌸','🫧'];
+    function spawnHeart() {
+        const el = document.createElement('div');
+        el.className = 'h';
+        el.textContent = emos[Math.random() * emos.length | 0];
+        const sz = 10 + Math.random() * 18, d = 7 + Math.random() * 7;
+        const dl = Math.random() * 6, bl = Math.random() < .35 ? Math.random() * 2.5 : 0;
+        const op = (.12 + Math.random() * .25).toFixed(2);
+        el.style.cssText = `left:${Math.random()*100}%;font-size:${sz}px;filter:blur(${bl}px);--d:${d}s;--dl:${dl}s;--op:${op}`;
+        heartsEl.appendChild(el);
+        setTimeout(() => el.remove(), (d + dl) * 1000 + 500);
+    }
+    for (let i = 0; i < 22; i++) spawnHeart();
+    setInterval(spawnHeart, 750);
 
-        function orbitRadius() {
-            return Math.min(window.innerWidth, window.innerHeight) * 0.36;
-        }
+    /* ── NO BUTTON LOGIC ── */
+    const noBtn    = $('noBtn');
+    const yesBtn   = $('yesBtn');
+    const mainCard = $('mainCard');
+    const hint     = $('hint');
 
-        sizeRing();
-        window.addEventListener('resize', sizeRing);
+    const MAX_PC  = 12;
+    const MAX_MOB = 10;
+    const MAX = mob() ? MAX_MOB : MAX_PC;
 
-        /* \u2500\u2500 FLOATING HEARTS \u2500\u2500 */
-        const heartsEl = $('hearts');
-        const emos = ['\ud83d\udc97','\ud83d\udc95','\ud83e\ude77','\u2764\ufe0f','\ud83d\udc9d','\u2728','\ud83c\udf38','\ud83e\udee7'];
-        function spawnHeart() {
-            const el = document.createElement('div');
-            el.className = 'h';
-            el.textContent = emos[Math.random() * emos.length | 0];
-            const sz = 10 + Math.random() * 18;
-            const d  = 7  + Math.random() * 7;
-            const dl = Math.random() * 6;
-            const bl = Math.random() < .35 ? Math.random() * 2.5 : 0;
-            const op = (.12 + Math.random() * .25).toFixed(2);
-            el.style.cssText = `left:${Math.random()*100}%;font-size:${sz}px;filter:blur(${bl}px);--d:${d}s;--dl:${dl}s;--op:${op}`;
-            heartsEl.appendChild(el);
-            setTimeout(() => el.remove(), (d + dl) * 1000 + 500);
-        }
-        for (let i = 0; i < 22; i++) spawnHeart();
-        setInterval(spawnHeart, 750);
+    let attempts = 0;
+    let isFixed  = false;
+    let onCooldown = false;
 
-        /* \u2500\u2500 NO BUTTON LOGIC \u2500\u2500 */
-        const noBtn    = $('noBtn');
-        const yesBtn   = $('yesBtn');
-        const mainCard = $('mainCard');
-        const hint     = $('hint');
+    const msgs = [
+        "Hey! Where are you going? 😅",
+        "Nope. Still running 💨",
+        "You'll never catch it 😜",
+        "Getting sneakier every time 🏃",
+        "Okay that was close… 😳",
+        "Really? Still trying? 😂",
+        "This is getting embarrassing tbh",
+        "I'm running out of places to hide 😰",
+        "You're surprisingly determined…",
+        "Alright alright, getting tired now 🥱",
+        "One more try… maybe…",
+        "Okay. You earned it. 😩",
+    ];
 
-        const MAX_PC  = 12;   // attempts before it lets you click on PC
-        const MAX_MOB = 10;   // attempts before it lets you click on mobile
-        const MAX = mob() ? MAX_MOB : MAX_PC;
+    /* Detach from document flow, preserving exact visual position */
+    function detach() {
+        if (isFixed) return;
+        const r = noBtn.getBoundingClientRect();
+        // Disable transition during the detach snap to avoid a flash from 0,0
+        noBtn.style.transition = 'none';
+        noBtn.style.position   = 'fixed';
+        noBtn.style.left       = r.left  + 'px';
+        noBtn.style.top        = r.top   + 'px';
+        noBtn.style.width      = r.width + 'px';
+        noBtn.style.margin     = '0';
+        noBtn.style.zIndex     = '1000';
+        // Force reflow, then re-enable transitions
+        noBtn.getBoundingClientRect();
+        noBtn.style.transition = '';
+        isFixed = true;
+    }
 
-        let attempts = 0;
-        let isFixed  = false;
-        let cooldown = false;  // prevents rapid-fire escaping
+    function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
-        const msgs = [
-            "Where are you going? \ud83d\ude05",
-            "I'm slippery \ud83d\udc85",
-            "Wow you're persistent \ud83d\ude02",
-            "I really don't want to be clicked\u2026",
-            "Impressive. Still no. \ud83c\udfc3",
-            "Okay you're fast actually \ud83d\ude33",
-            "This is getting embarrassing tbh",
-            "I'm running out of places to go \ud83d\ude30",
-            "Almost caught me\u2026",
-            "You're getting dangerously close \ud83d\udc40",
-            "Alright fine, I'm tired now \ud83e\udd71",
-            "One more try and I'll let you\u2026",
-        ];
+    function escape(cursorX, cursorY) {
+        if (attempts >= MAX || onCooldown) return;
+        onCooldown = true;
+        setTimeout(() => onCooldown = false, 460);
 
-        /* Detach button from flow on first escape */
-        function detach() {
-            if (isFixed) return;
-            const r = noBtn.getBoundingClientRect();
-            noBtn.style.position = 'fixed';
-            noBtn.style.left     = r.left   + 'px';
-            noBtn.style.top      = r.top    + 'px';
-            noBtn.style.width    = r.width  + 'px';
-            noBtn.style.margin   = '0';
-            noBtn.style.zIndex   = '1000';
-            /* Force a reflow before adding transition so we don't animate from 0,0 */
-            noBtn.getBoundingClientRect();
-            isFixed = true;
-        }
+        detach();
 
-        function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+        const PAD = 18;
+        const r   = noBtn.getBoundingClientRect();
+        const bW  = r.width;
+        const bH  = r.height;
+        const vW  = window.innerWidth;
+        const vH  = window.innerHeight;
+        let nx, ny;
 
-        function escape(cursorX, cursorY) {
-            if (attempts >= MAX || cooldown) return;
-            cooldown = true;
-            setTimeout(() => cooldown = false, 420); // match transition duration
-
-            detach();
-
-            const PAD = 16;
-            const r   = noBtn.getBoundingClientRect();
-            const bW  = r.width;
-            const bH  = r.height;
-            const vW  = window.innerWidth;
-            const vH  = window.innerHeight;
+        if (!mob()) {
+            /* ─ PC: orbit to opposite side of screen center, with small wobble ─ */
             const cx  = vW / 2;
             const cy  = vH / 2;
-            let nx, ny;
-
-            if (!mob()) {
-                /* \u2500 PC: orbit opposite the cursor around screen center \u2500 */
-                const R = orbitRadius();
-                /* Angle from center to cursor, then flip + slight random wobble */
-                const angToCursor = Math.atan2(cursorY - cy, cursorX - cx);
-                const wobble = (Math.random() - .5) * 0.55;
-                const escapeAng = angToCursor + Math.PI + wobble;
-
-                nx = cx + Math.cos(escapeAng) * R - bW / 2;
-                ny = cy + Math.sin(escapeAng) * R - bH / 2;
-            } else {
-                /* \u2500 Mobile: random quadrant jump (different from current) \u2500 */
-                const curQuadX = r.left < vW / 2 ? 1 : 0;
-                const curQuadY = r.top  < vH / 2 ? 1 : 0;
-                const qx = 1 - curQuadX; // opposite horizontal half
-                const qy = 1 - curQuadY; // opposite vertical half
-                nx = PAD + qx * (vW / 2 - bW - PAD) + Math.random() * (vW / 2 - bW - PAD * 2);
-                ny = PAD + qy * (vH / 2 - bH - PAD) + Math.random() * (vH / 2 - bH - PAD * 2);
-            }
-
-            /* Hard clamp \u2014 button NEVER leaves screen */
-            nx = clamp(nx, PAD, vW - bW - PAD);
-            ny = clamp(ny, PAD, vH - bH - PAD);
-
-            noBtn.style.left = nx + 'px';
-            noBtn.style.top  = ny + 'px';
-
-            attempts++;
-
-            /* Grow YES each time */
-            const sc = Math.min(1 + attempts * .04, 1.5);
-            yesBtn.style.transform = `scale(${sc})`;
-
-            /* Show hint */
-            const idx = Math.min(attempts - 1, msgs.length - 1);
-            hint.textContent = msgs[idx];
-            hint.style.opacity = '1';
+            const R   = getR();
+            const ang = Math.atan2(cursorY - cy, cursorX - cx);
+            // Opposite angle + random wobble so it's not perfectly predictable
+            const esc = ang + Math.PI + (Math.random() - .5) * 0.6;
+            nx = cx + Math.cos(esc) * R - bW / 2;
+            ny = cy + Math.sin(esc) * R - bH / 2;
+        } else {
+            /* ─ Mobile: jump to the opposite quadrant ─ */
+            const qx = r.left < vW / 2 ? 1 : 0;  // opposite half
+            const qy = r.top  < vH / 2 ? 1 : 0;
+            nx = qx * (vW / 2) + PAD + Math.random() * (vW / 2 - bW - PAD * 2);
+            ny = qy * (vH / 2) + PAD + Math.random() * (vH / 2 - bH - PAD * 2);
         }
 
-        /* \u2500 PC: escape when cursor gets close \u2500 */
-        if (!mob()) {
-            const PROX = 110; // pixels of proximity to trigger escape
-            document.addEventListener('mousemove', e => {
-                if (attempts >= MAX) return;
-                if (!isFixed) {
-                    // Check against original in-flow position
-                    const r  = noBtn.getBoundingClientRect();
-                    const bx = r.left + r.width  / 2;
-                    const by = r.top  + r.height / 2;
-                    if (Math.hypot(e.clientX - bx, e.clientY - by) < PROX) {
-                        escape(e.clientX, e.clientY);
-                    }
-                } else {
-                    const r  = noBtn.getBoundingClientRect();
-                    const bx = r.left + r.width  / 2;
-                    const by = r.top  + r.height / 2;
-                    if (Math.hypot(e.clientX - bx, e.clientY - by) < PROX) {
-                        escape(e.clientX, e.clientY);
-                    }
+        /* Hard clamp — guaranteed on screen */
+        nx = clamp(nx, PAD, vW - bW - PAD);
+        ny = clamp(ny, PAD, vH - bH - PAD);
+
+        noBtn.style.left = nx + 'px';
+        noBtn.style.top  = ny + 'px';
+
+        attempts++;
+
+        /* Grow YES button more tempting with each dodge */
+        yesBtn.style.transform = `scale(${Math.min(1 + attempts * .04, 1.5)})`;
+
+        /* Hint message */
+        const idx = Math.min(attempts - 1, msgs.length - 1);
+        hint.textContent  = msgs[idx];
+        hint.style.opacity = '1';
+    }
+
+    /* ─ PC: watch proximity with mousemove ─ */
+    if (!mob()) {
+        const PROX = 108;
+        document.addEventListener('mousemove', e => {
+            if (attempts >= MAX) return;
+            const r  = noBtn.getBoundingClientRect();
+            const bx = r.left + r.width  / 2;
+            const by = r.top  + r.height / 2;
+            if (Math.hypot(e.clientX - bx, e.clientY - by) < PROX) {
+                escape(e.clientX, e.clientY);
+            }
+        });
+    }
+
+    /* ─ Mobile: escape on every touch attempt ─ */
+    noBtn.addEventListener('touchstart', e => {
+        e.preventDefault();
+        if (attempts >= MAX) return;
+        const t = e.touches[0];
+        escape(t.clientX, t.clientY);
+    }, { passive: false });
+
+    /* ─ Clicking NO (only after MAX attempts) ─ */
+    noBtn.addEventListener('click', () => {
+        if (attempts < MAX) return;
+        mainCard.style.display = 'none';
+        noBtn.style.opacity    = '0';
+        setTimeout(() => noBtn.style.display = 'none', 300);
+        hint.style.opacity     = '0';
+        $('objection').style.display = 'flex';
+    });
+
+    /* ─ Clicking YES ─ */
+    yesBtn.addEventListener('click', () => {
+        mainCard.style.display = 'none';
+        noBtn.style.opacity    = '0';
+        setTimeout(() => noBtn.style.display = 'none', 300);
+        hint.style.opacity     = '0';
+        $('success').style.display = 'flex';
+        launchConfetti();
+    });
+
+    /* ── CONFETTI ── */
+    function launchConfetti() {
+        const cv  = $('confetti');
+        cv.width  = window.innerWidth;
+        cv.height = window.innerHeight;
+        const ctx = cv.getContext('2d');
+        const COL = ['#ff4d6d','#ff80ab','#ffb3c1','#fff','#ff1744','#f8bbd0','#fce4ec','#ffa0b4'];
+        const SYM = ['♥','✦','✿','◆','·','★','•'];
+        const P   = Array.from({ length: 140 }, () => ({
+            x:   Math.random() * cv.width,
+            y:   Math.random() * cv.height - cv.height,
+            sz:  6  + Math.random() * 13,
+            vx:  (Math.random() - .5) * 3.5,
+            vy:  1.4 + Math.random() * 3,
+            rot: Math.random() * 360,
+            rs:  (Math.random() - .5) * 6,
+            col: COL[Math.random() * COL.length | 0],
+            sym: SYM[Math.random() * SYM.length | 0],
+            op:  .4 + Math.random() * .6,
+        }));
+        let raf;
+        (function draw() {
+            ctx.clearRect(0, 0, cv.width, cv.height);
+            let alive = 0;
+            P.forEach(p => {
+                p.x += p.vx; p.y += p.vy; p.vy += .04; p.rot += p.rs;
+                if (p.y < cv.height + 40) {
+                    alive++;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot * Math.PI / 180);
+                    ctx.globalAlpha = p.op;
+                    ctx.fillStyle   = p.col;
+                    ctx.font = `${p.sz * 2}px serif`;
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText(p.sym, 0, 0);
+                    ctx.restore();
                 }
             });
-        }
+            if (alive > 0) raf = requestAnimationFrame(draw);
+            else cancelAnimationFrame(raf);
+        })();
+    }
 
-        /* \u2500 Mobile: escape on touch \u2500 */
-        noBtn.addEventListener('touchstart', e => {
-            e.preventDefault();
-            if (attempts >= MAX) return;
-            const t = e.touches[0];
-            escape(t.clientX, t.clientY);
-        }, { passive: false });
-
-        /* \u2500 Click handlers \u2500 */
-        noBtn.addEventListener('click', () => {
-            if (attempts < MAX) return;
-            hide(mainCard);
-            noBtn.style.opacity = '0';
-            setTimeout(() => { noBtn.style.display = 'none'; }, 300);
-            hide(hint);
-            show($('objection'));
-        });
-
-        yesBtn.addEventListener('click', () => {
-            hide(mainCard);
-            if (isFixed) {
-                noBtn.style.opacity = '0';
-                setTimeout(() => { noBtn.style.display = 'none'; }, 300);
-            }
-            hide(hint);
-            show($('success'));
-            launchConfetti();
-        });
-
-        function show(el) { el.style.display = 'flex'; }
-        function hide(el) { el.style.display = 'none'; }
-
-        /* \u2500\u2500
+})();
+</script>
+</body>
+</html>
